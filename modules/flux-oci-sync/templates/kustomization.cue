@@ -31,5 +31,12 @@ import (
 		if #config.dependsOn != _|_ {
 			dependsOn: #config.dependsOn
 		}
+		if #config.decryption != _|_ {
+			decryption: {
+				provider: #config.decryption.provider
+				secretRef:
+					name: #config.decryption.providerSpec.secretName
+			}
+		}
 	}
 }

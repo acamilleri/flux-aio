@@ -55,6 +55,15 @@ import (
 
 	substitute?: [string]: string
 
+	decryption?: {
+		// sops is the only supported provider
+		provider: "sops"
+		providerSpec!: {
+			secretName!:  string
+			secretValue?: bytes
+		}
+	}
+
 	dependsOn?: [...{
 		name:       string
 		namespace?: string
@@ -72,6 +81,11 @@ import (
 
 	if config.auth.credentials != _|_ {
 		objects: imagepullsecret: #PullSecret & {#config: config}
+	}
+
+	if config.decryption.providerSpec.secretValue != _|_ {
+		// Create a new secret
+		objects: decryptionsecret: #DecryptionSecret & {#config: config}
 	}
 
 	if config.tls.ca != _|_ {
